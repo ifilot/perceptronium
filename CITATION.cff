@@ -13,6 +13,6 @@ version: "1.0.0"
 date-released: 2026-03-11
 keywords:
   - machine learning
-  - perceptron
+  - atomistic machine learning
+  - behler-parrinello
   - neural networks
-  - scientific computing
