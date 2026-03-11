@@ -72,44 +72,67 @@ See `data/request` for an example.
 
 ## Typical workflow
 
-1. Convert trajectory + energies into per-frame `.data` files.
-2. Build the C++ executable.
-3. Run descriptor generation with a request file:
+1. Extract one energy value per frame (e.g. from `OUTCAR`) into `XDATEN`:
 
    ```bash
-   ./build/perceptronium -r data/request -d your_dataset.pkg -o descriptors.npz
+   grep "y  w" OUTCAR | awk '{print $7}' > XDATEN
    ```
 
-   (`-d` expects the binary package generated from your structures; see
-   `pysrc/xdatcar2pack.py` / `pysrc/pack.py`.)
-4. Train/evaluate models from the generated `.npz` (PyTorch utilities are in
+2. Convert `XDATCAR + XDATEN` into a binary package (`.pkg`):
+
+   ```bash
+   python3 pysrc/xdatcar2pack.py \
+     -x /path/to/XDATCAR \
+     -e /path/to/XDATEN \
+     -o /path/to/my_system.pkg
+   ```
+
+3. Copy and edit a request file:
+
+   ```bash
+   cp data/request data/my_request
+   ```
+
+4. Generate descriptors with the C++ executable:
+
+   ```bash
+   ./build/bpsfp \
+     -d /path/to/my_system.pkg \
+     -r data/my_request \
+     -o /path/to/my_system_coeff.npz
+   ```
+
+5. Train/evaluate models from the generated `.npz` (PyTorch utilities are in
    `torch/perceptronium`).
 
 ## Compilation and dependencies
 
-Perceptronium is a mixed C++ / Python software suite. To work with Perceptronium,
-ensure you have the following packages installed.
+Perceptronium is a mixed C++ / Python software suite. The documented setup is
+to install a minimal system toolchain and use a dedicated Python virtual
+environment.
 
 ```bash
-sudo apt install python3 python3-ase python3-torch python3-tqdm build-essential cmake
+sudo apt install python3 python3-dev python3-venv build-essential cmake
 ```
 
-The above command might not work if python3-torch is not available via your
-package manager. If so, create a virtual Python environment and install Torch
-in there. The commands below assume you have GPU.
+Then create and activate an environment:
 
 ```bash
-python3 -m venv ~/.venv
-source ~/.venv/bin/activate
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-pip install pyyaml
+python3 -m venv ~/.venv-perceptronium
+source ~/.venv-perceptronium/bin/activate
+```
+
+Install Python dependencies in that environment:
+
+```bash
+pip install torch torchvision torchaudio pyyaml matplotlib ase tqdm
 ```
 
 ### Compilation of perceptronium
 
 ```bash
-mkdir build
-cd build
-cmake ../src
-make -j
+cmake -S src -B build
+cmake --build build -j
 ```
+
+This produces the descriptor executable at `./build/bpsfp`.
