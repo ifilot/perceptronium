@@ -23,6 +23,8 @@
 #include <filesystem>
 #include <tclap/CmdLine.h>
 
+#include "config.h"
+
 #include "progress.h"
 #include "requestfile.h"
 #include "datafile.h"
@@ -33,7 +35,7 @@ int main(int argc, char* argv[]){
 
     try {
         // Create a TCLAP command line parser
-        TCLAP::CmdLine cmd("Symmetry function generator", ' ', "1.0");
+        TCLAP::CmdLine cmd("Symmetry function generator", ' ', BPSFP_VERSION);
 
         // Define the required arguments
         TCLAP::ValueArg<std::string> requestFileArg("r", "request", 

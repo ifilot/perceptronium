@@ -18,7 +18,7 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-project(bpsfp VERSION 0.1.0 LANGUAGES CXX)
+project(bpsfp VERSION 1.0.0 LANGUAGES CXX)
 
 set(PROGNAME "BPSFP")
 message(STATUS "Writing configuration file in: ${CMAKE_CURRENT_SOURCE_DIR}/config.h")

@@ -17,7 +17,6 @@
  * 
  ******************************************************************************/
 
-#ifndef _CONFIG_H
-#define _CONFIG_H
+#pragma once
 
-#endif
+#define BPSFP_VERSION "@PROJECT_VERSION@"

@@ -1,12 +1,12 @@
 # Perceptronium
 
-Stand-alone minimalistic package for generating Behler-Parrinello symmetry
-function descriptors and training neural-network interatomic potentials.
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ifilot/perceptronium?label=version)
+[![Unit Tests](https://github.com/ifilot/perceptronium/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ifilot/perceptronium/actions/workflows/unit-tests.yml)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-Although CH4 examples are included, the data conversion and descriptor
-generation pipeline is not limited to methane: any trajectory/energy pair that
-can be read as an `XDATCAR`-like trajectory (via ASE) and a matching energy
-list can be converted and used.
+Minimalistic stand-alone package for generating Behler–Parrinello
+symmetry-function descriptors for atomistic machine-learning potentials based on
+neural networks.
 
 ## File formats
 
