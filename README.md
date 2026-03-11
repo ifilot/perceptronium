@@ -1,7 +1,7 @@
 # Perceptronium
 
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/ifilot/perceptronium?label=version)
-![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18966047.svg)
+[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18966047.svg)](https://doi.org/10.5281/zenodo.18966047)
 [![Unit Tests](https://github.com/ifilot/perceptronium/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/ifilot/perceptronium/actions/workflows/unit-tests.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
