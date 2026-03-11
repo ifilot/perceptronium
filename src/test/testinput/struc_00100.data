@@ -1,0 +1,37 @@
+# Data file containing input for a Behler-Parrinello Neural Network
+
+Energy: eV
+    -20.299238930
+
+Lattice:
+       10.000000000        0.000000000        0.000000000
+        0.000000000       10.000000000        0.000000000
+        0.000000000        0.000000000       10.000000000
+
+Periodicity:
+    3
+
+Atomlist:
+    0 1 1 1 1
+
+Chemical Symbols:
+    C H
+
+Number of Bulk Atoms:
+    5
+
+Electronic Convergence:
+    0 1
+
+Ionic Convergence:
+    No
+
+Coordinates: Cartesian
+        5.033616000        4.931281400        5.009337800
+        4.952839000        4.366592700        4.095384800
+        4.253666200        5.655751400        6.147459800
+        6.090389200        5.144350800        5.216988700
+        4.299343400        5.658684100        4.428010900
+
+Symmetry Functions:
+

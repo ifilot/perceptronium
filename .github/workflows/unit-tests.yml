@@ -1,0 +1,77 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            gdb \
+            pkg-config \
+            zlib1g-dev \
+            libtclap-dev \
+            libcppunit-dev
+
+      - name: Configure
+        run: cmake -S src -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run unit tests
+        id: run_tests
+        continue-on-error: true
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Re-run failed tests with GDB backtrace
+        if: steps.run_tests.outcome == 'failure'
+        run: |
+          cmake -S src -B build-debug -DCMAKE_BUILD_TYPE=Debug
+          cmake --build build-debug --parallel
+
+          if [ -f build/Testing/Temporary/LastTestsFailed.log ]; then
+            failed_tests_file=build/Testing/Temporary/LastTestsFailed.log
+          else
+            echo "No LastTestsFailed.log was produced."
+            exit 0
+          fi
+
+          while IFS=':' read -r _ test_name; do
+            if [ -z "$test_name" ]; then
+              continue
+            fi
+
+            test_name="$(echo "$test_name" | xargs)"
+            executable_path="$(find build-debug -type f -name "$test_name" -perm -111 | head -n 1)"
+
+            if [ -z "$executable_path" ]; then
+              echo "Could not find executable for failed test: $test_name"
+              continue
+            fi
+
+            echo "Running failed test '$test_name' under GDB"
+            gdb --batch -q \
+              -ex "set pagination off" \
+              -ex "run" \
+              -ex "bt full" \
+              -ex "thread apply all bt full" \
+              --args "$executable_path" || true
+          done < "$failed_tests_file"
+
+      - name: Fail job if tests failed
+        if: steps.run_tests.outcome == 'failure'
+        run: exit 1
